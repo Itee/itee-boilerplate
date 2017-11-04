@@ -28,7 +28,12 @@ const ROOT_PATH = path.resolve( __dirname, '..', '..', '..' )
 function postInstall () {
     'use strict'
 
-    _copyFiles( '', [ 'LICENSE.md', 'README.md', '_gitignore', 'gulpfile.js' ] )
+    _copyFiles( '', [
+        'LICENSE.md',
+        'README.md',
+        '_gitignore',
+        'gulpfile.js'
+    ] )
 
     _createFolder( 'builds' )
 
@@ -51,9 +56,16 @@ function postInstall () {
 
     _createFolder( 'tests' )
     _createFolder( 'tests/benchmarks' )
-    _copyFiles( 'tests/benchmarks', [ 'Benchmarks.html', 'itee.bench.js' ] )
+    _copyFiles( 'tests/benchmarks', [
+        'Benchmarks.html',
+        'itee.bench.js'
+    ] )
     _createFolder( 'tests/units' )
-    _copyFiles( 'tests/units', [ 'UnitTests.html', 'itee.unit.js' ] )
+    _copyFiles( 'tests/units', [
+        'UnitTests.html',
+        'itee.unit.js'
+    ] )
+
     _createFolder( 'tutorials' )
 
     _updatePackage()
