@@ -67,7 +67,7 @@ gulp.task( 'clean', () => {
 ////////////////////
 gulp.task( 'lint', () => {
 
-    const config = require( 'configs/eslint.conf' )
+    const config = require( './configs/eslint.conf' )
 
     return gulp.src( [ 'sources/**/*' ] )
                .pipe( eslint( config ) )
@@ -87,7 +87,7 @@ gulp.task( 'lint', () => {
 ////////////////////
 gulp.task( 'doc', () => {
 
-    const config = require( 'configs/jsdoc.conf' )
+    const config = require( './configs/jsdoc.conf' )
 
     return gulp.src( [ 'sources/**/*' ], { read: false } )
                .pipe( jsdoc( config ) )
@@ -178,7 +178,7 @@ gulp.task( 'build', ( done ) => {
                 const environment  = environments[ envIndex ]
                 const onProduction = (environment === 'production')
 
-                const config = require( 'configs/rollup.conf' )( format, onProduction, sourceMap )
+                const config = require( './configs/rollup.conf' )( format, onProduction, sourceMap )
 
                 configs.push( config )
             }
