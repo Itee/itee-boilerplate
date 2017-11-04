@@ -28,14 +28,15 @@ const ROOT_PATH = path.resolve( __dirname, '..', '..', '..' )
 function postInstall () {
     'use strict'
 
-    _copyFiles( '', [ 'LICENSE.md', 'README.md', '_gitignore' ] )
+    _copyFiles( '', [ 'LICENSE.md', 'README.md', '_gitignore', 'gulpfile.js' ] )
 
     _createFolder( 'builds' )
+
     _createFolder( 'configs' )
     _copyFiles( 'configs', [ 'help.conf.js', 'jsdoc.conf.json', 'karma.conf.bench.js', 'karma.conf.unit.js', 'rollup.conf.js' ] )
 
     _createFolder( 'scripts' )
-    _copyFiles( 'scripts', [ 'gulpfile.js', 'help.js' ] )
+    _copyFiles( 'scripts', [ 'help.js' ] )
 
     _createFolder( 'sources' )
     _createFolder( 'tests' )
