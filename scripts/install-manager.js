@@ -28,7 +28,7 @@ const ROOT_PATH = path.resolve( __dirname, '..', '..', '..' )
 function postInstall () {
     'use strict'
 
-    _copyFiles( '', [ 'LICENSE.md', 'README.md', '.gitignore' ] )
+    _copyFiles( '', [ 'LICENSE.md', 'README.md', '_gitignore' ] )
 
     _createFolder( 'builds' )
     _createFolder( 'configs' )
@@ -76,6 +76,11 @@ function _copyFiles ( folder, files ) {
 
 function _copyFile ( folder, file ) {
     'use strict'
+
+    // Check for dotFile
+    if ( file.test( /^_/ ) ) {
+        file.replace( /^_/, '.' )
+    }
 
     const inputFile  = path.join( __dirname, '..', '_toCopy', folder, file )
     const outputFile = path.join( ROOT_PATH, folder, file )
