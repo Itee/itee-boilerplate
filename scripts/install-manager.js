@@ -135,15 +135,15 @@ function _updateScripts ( packageJson ) {
     }
 
     Object.assign( packageJson.scripts, {
-        "help":    "gulp --gulpfile scripts/gulpfile.js help",
-        "clean":   "gulp --gulpfile scripts/gulpfile.js clean",
-        "lint":    "gulp --gulpfile scripts/gulpfile.js lint",
-        "doc":     "gulp --gulpfile scripts/gulpfile.js doc",
-        "test":    "gulp --gulpfile scripts/gulpfile.js test",
-        "unit":    "gulp --gulpfile scripts/gulpfile.js unit",
-        "bench":   "gulp --gulpfile scripts/gulpfile.js bench",
-        "build":   "gulp --gulpfile scripts/gulpfile.js build",
-        "release": "gulp --gulpfile scripts/gulpfile.js release"
+        "help":    "gulp help",
+        "clean":   "gulp clean",
+        "lint":    "gulp lint",
+        "doc":     "gulp doc",
+        "test":    "gulp test",
+        "unit":    "gulp unit",
+        "bench":   "gulp bench",
+        "build":   "gulp build",
+        "release": "gulp release"
     } )
 
 }
