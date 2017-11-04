@@ -10,12 +10,12 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 class Application extends React.Component {
-  render () {
-    return (<div> Hello {this.props.name} </div>)
-  }
+    render () {
+        return (<div> Hello {this.props.name} </div>)
+    }
 }
 
 // Define the root element.
-const root = document.querySelector('ApplicationRoot')
+const root = document.querySelector( 'ApplicationRoot' )
 
-ReactDOM.render(<Application name='World' />, root)
+ReactDOM.render( <Application name='World' />, root )

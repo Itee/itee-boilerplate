@@ -82,11 +82,11 @@ function _copyFiles ( folder, files ) {
 function _copyFile ( folder, file ) {
     'use strict'
 
-    const inputFile  = path.join( __dirname, '..', '_toCopy', folder, file )
+    const inputFile = path.join( __dirname, '..', '_toCopy', folder, file )
 
     // Check for dotFile
     let outputFileName = file
-    const isDotFile = new RegExp('^_')
+    const isDotFile    = new RegExp( '^_' )
     if ( isDotFile.test( file ) ) {
         outputFileName = file.replace( /^_/, '.' )
     }
@@ -118,7 +118,7 @@ function _updatePackage () {
 
     const updatedPackage = JSON.stringify( packageJson )
     fs.writeFileSync( PACKAGE_JSON_PATH, updatedPackage )
-    execSync( ' npm install',
+    execSync( 'npm install',
         {
             cwd:   ROOT_PATH,
             stdio: 'inherit'
@@ -239,7 +239,7 @@ function _firstRelease () {
 if ( installationMode === 'install' ) {
     postInstall()
 } else if ( installationMode === 'uninstall' ) {
-//    postUninstall()
+    //    postUninstall()
 } else {
     console.error( "Invalid installation mode, avalaible values are: 'install' and 'uninstall'" )
 }

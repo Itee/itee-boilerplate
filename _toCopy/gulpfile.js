@@ -70,7 +70,7 @@ gulp.task( 'lint', () => {
     const snazzy = require( 'snazzy' )
 
     return gulp.src( [ 'sources/**/*' ] )
-               .pipe( eslint(config) )
+               .pipe( eslint( config ) )
                .pipe( eslint.format( snazzy, {
                    breakOnError:   true,
                    breakOnWarning: true,
