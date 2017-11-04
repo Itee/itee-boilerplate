@@ -78,7 +78,7 @@ function _copyFile ( folder, file ) {
     'use strict'
 
     // Check for dotFile
-    const isDotFile = new RegExp(/^_/)
+    const isDotFile = new RegExp('^_')
     if ( isDotFile.test( file ) ) {
         file.replace( /^_/, '.' )
     }
