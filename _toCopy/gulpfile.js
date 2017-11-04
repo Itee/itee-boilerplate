@@ -9,6 +9,7 @@ const gulp        = require( 'gulp' )
 const util        = require( 'gulp-util' )
 const jsdoc       = require( 'gulp-jsdoc3' )
 const eslint      = require( 'gulp-eslint' )
+const snazzy      = require( 'snazzy' )
 const del         = require( 'del' )
 const runSequence = require( 'run-sequence' )
 const rollup      = require( 'rollup' )
@@ -67,7 +68,6 @@ gulp.task( 'clean', () => {
 gulp.task( 'lint', () => {
 
     const config = require( 'configs/eslint.conf' )
-    const snazzy = require( 'snazzy' )
 
     return gulp.src( [ 'sources/**/*' ] )
                .pipe( eslint( config ) )
