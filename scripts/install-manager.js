@@ -33,7 +33,15 @@ function postInstall () {
     _createFolder( 'builds' )
 
     _createFolder( 'configs' )
-    _copyFiles( 'configs', [ 'help.conf.js', 'jsdoc.conf.json', 'karma.conf.bench.js', 'karma.conf.unit.js', 'rollup.conf.js' ] )
+    _copyFiles( 'configs', [
+        'babel.conf.js',
+        'eslint.conf.js',
+        'help.conf.js',
+        'jsdoc.conf.json',
+        'karma.conf.bench.js',
+        'karma.conf.unit.js',
+        'rollup.conf.js'
+    ] )
 
     _createFolder( 'scripts' )
     _copyFiles( 'scripts', [ 'help.js' ] )
