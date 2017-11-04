@@ -109,7 +109,7 @@ function _updatePackage () {
     _updateDevDependencies( packageJson )
     _updateContributors( packageJson )
 
-    console.log( packageJson )
+    console.log( `Create default package.json` )
 
     const updatedPackage = JSON.stringify( packageJson )
     fs.writeFileSync( PACKAGE_JSON_PATH, updatedPackage )
@@ -222,7 +222,7 @@ function _updateContributors ( packageJson ) {
 if ( installationMode === 'install' ) {
     postInstall()
 } else if ( installationMode === 'uninstall' ) {
-    postUninstall()
+//    postUninstall()
 } else {
     console.error( "Invalid installation mode, avalaible values are: 'install' and 'uninstall'" )
 }
