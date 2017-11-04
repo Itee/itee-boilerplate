@@ -50,6 +50,8 @@ function postInstall () {
 
     _updatePackage()
 
+    _firstRelease()
+
 }
 
 function _createFolder ( name ) {
@@ -219,6 +221,18 @@ function _updateContributors ( packageJson ) {
     }
 
     packageJson.contributors.push( CONTRIB )
+
+}
+
+function _firstRelease () {
+    'use strict'
+
+    execSync( 'npm run release',
+        {
+            cwd:   ROOT_PATH,
+            stdio: 'inherit'
+        }
+    )
 
 }
 
