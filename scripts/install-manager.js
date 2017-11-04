@@ -192,6 +192,7 @@ function _updateDevDependencies ( packageJson ) {
         "mocha":                      "*",
         "mochawesome":                "*",
         "npm-scripts-help":           "*",
+        "run-sequence":               "*",
         "rollup":                     "*",
         "rollup-plugin-buble":        "*",
         "rollup-plugin-commonjs":     "*",
