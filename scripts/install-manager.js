@@ -39,8 +39,8 @@ function postInstall () {
 
     _createFolder( 'configs' )
     _copyFiles( 'configs', [
-        'babel.conf.js',
-        'eslint.conf.js',
+        'babel.conf.json',
+        'eslint.conf.json',
         'help.conf.js',
         'jsdoc.conf.json',
         'karma.conf.bench.js',
