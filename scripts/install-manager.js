@@ -49,28 +49,6 @@ function postInstall () {
 
 }
 
-function postUninstall () {
-    'use strict'
-
-    // post uninstall is call after postinstall...
-    return
-
-    _removeFolder( 'tutorial' )
-    _removeFolder( 'tests/benchmarks' )
-    _removeFolder( 'tests/units' )
-    _removeFolder( 'tests' )
-    _removeFolder( 'sources' )
-
-    _removeFiles( 'scripts', [ 'build.js', 'help.js' ] )
-    _removeFolder( 'scripts' )
-
-    _removeFiles( 'configs', [ 'help.conf.js', 'jsdoc.conf.json', 'karma.conf.bench.js', 'karma.conf.unit.js', 'rollup.conf.js' ] )
-    _removeFolder( 'configs' )
-
-    _removeFolder( 'builds' )
-
-}
-
 function _createFolder ( name ) {
     'use strict'
 
@@ -82,20 +60,6 @@ function _createFolder ( name ) {
 
     fs.mkdirSync( folderPath, 0o777 )
     console.log( `Create ${folderPath}` )
-
-}
-
-function _removeFolder ( name ) {
-    'use strict'
-
-    const folderPath = path.resolve( ROOT_PATH, name )
-
-    if ( !fs.existsSync( folderPath ) ) {
-        return
-    }
-
-    fs.rmdirSync( folderPath )
-    console.log( `Delete ${folderPath}` )
 
 }
 
@@ -113,8 +77,8 @@ function _copyFiles ( folder, files ) {
 function _copyFile ( folder, file ) {
     'use strict'
 
-    const inputFile  = path.resolve( __dirname, '..', folder, file )
-    const outputFile = path.resolve( ROOT_PATH, folder, file )
+    const inputFile  = path.join( __dirname, '..', '_toCopy', folder, file )
+    const outputFile = path.join( ROOT_PATH, folder, file )
 
     if ( fs.existsSync( outputFile ) ) {
         return
@@ -122,31 +86,6 @@ function _copyFile ( folder, file ) {
 
     fsExtra.copySync( inputFile, outputFile )
     console.log( `Copy ${file} to ${outputFile}` )
-
-}
-
-function _removeFiles ( folder, files ) {
-    'use strict'
-
-    let file = undefined
-    for ( let fileIndex = 0, numberOfFiles = files.length ; fileIndex < numberOfFiles ; fileIndex++ ) {
-        file = files[ fileIndex ]
-        _removeFile( folder, file )
-    }
-
-}
-
-function _removeFile ( folder, file ) {
-    'use strict'
-
-    const filePath = path.resolve( ROOT_PATH, folder, file )
-
-    if ( !fs.existsSync( filePath ) ) {
-        return
-    }
-
-    fs.unlinkSync( filePath )
-    console.log( `Delete ${filePath}` )
 
 }
 
