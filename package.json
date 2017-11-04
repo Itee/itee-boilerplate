@@ -1,6 +1,6 @@
 {
   "name": "itee-boilerplate",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Itee boilerplate contains all bases packages ( you want ! ) to create a great project.",
   "main": "builds/my_app_name.js",
   "scripts": {
