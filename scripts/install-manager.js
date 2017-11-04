@@ -39,6 +39,8 @@ function postInstall () {
     _copyFiles( 'scripts', [ 'help.js' ] )
 
     _createFolder( 'sources' )
+    _copyFiles( 'sources', [ 'itee.js' ] )
+
     _createFolder( 'tests' )
     _createFolder( 'tests/benchmarks' )
     _copyFiles( 'tests/benchmarks', [ 'Benchmarks.html', 'itee.bench.js' ] )
