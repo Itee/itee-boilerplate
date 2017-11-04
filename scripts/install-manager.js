@@ -77,14 +77,16 @@ function _copyFiles ( folder, files ) {
 function _copyFile ( folder, file ) {
     'use strict'
 
+    const inputFile  = path.join( __dirname, '..', '_toCopy', folder, file )
+
     // Check for dotFile
+    let outputFileName = file
     const isDotFile = new RegExp('^_')
     if ( isDotFile.test( file ) ) {
-        file.replace( /^_/, '.' )
+        outputFileName = file.replace( /^_/, '.' )
     }
 
-    const inputFile  = path.join( __dirname, '..', '_toCopy', folder, file )
-    const outputFile = path.join( ROOT_PATH, folder, file )
+    const outputFile = path.join( ROOT_PATH, folder, outputFileName )
 
     if ( fs.existsSync( outputFile ) ) {
         return
