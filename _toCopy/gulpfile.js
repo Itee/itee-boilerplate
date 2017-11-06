@@ -8,7 +8,7 @@
 const gulp        = require( 'gulp' )
 const util        = require( 'gulp-util' )
 const jsdoc       = require( 'gulp-jsdoc3' )
-const eslint      = require( 'gulp-eslint' )
+const standard    = require( 'gulp-standard' )
 const snazzy      = require( 'snazzy' )
 const del         = require( 'del' )
 const runSequence = require( 'run-sequence' )
@@ -67,18 +67,23 @@ gulp.task( 'clean', () => {
 ////////////////////
 gulp.task( 'lint', () => {
 
-    const config = require( './configs/eslint.conf' )
-
     return gulp.src( [ 'sources/**/*' ] )
-               .pipe( eslint( config ) )
-               .pipe( eslint.format( snazzy, {
+               .pipe( standard({
+//                   cwd: '',      // current working directory (default: process.cwd())
+//                   filename: '', // path of the file containing the text being linted (optional, though some eslint plugins require it)
+                   fix: true,   // automatically fix problems
+//                   globals: [],  // custom global variables to declare
+//                   plugins: [],  // custom eslint plugins
+//                   envs: [],     // custom eslint environment
+                   parser: 'babel-eslint'    // custom js parser (e.g. babel-eslint)
+               }) )
+               .pipe( standard.reporter( snazzy, {
                    breakOnError:   true,
                    breakOnWarning: true,
                    quiet:          true,
                    showRuleNames:  true,
                    showFilePath:   true
                } ) )
-               .pipe( eslint.failAfterError() )
 
 } )
 
