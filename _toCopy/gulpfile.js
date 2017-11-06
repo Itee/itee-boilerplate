@@ -208,13 +208,22 @@ gulp.task( 'build', ( done ) => {
         const buildOutputMessage = `Building ${config.outputOptions.file}: `
         process.stdout.write( buildOutputMessage )
 
-        rollup.rollup( config.inputOptions ).then( ( bundle ) => {
-            bundle.write( config.outputOptions )
+        rollup.rollup( config.inputOptions )
+              .then( ( bundle ) => {
 
-            //    process.stdout.cursorTo(buildOutputMessage.length)
-            process.stdout.write( 'Done\n' ) // end the line
-            done()
-        } )
+                  bundle.write( config.outputOptions )
+                        .catch( ( error ) => {
+                            console.error( error );
+                        } )
+
+                  //    process.stdout.cursorTo(buildOutputMessage.length)
+                  process.stdout.write( 'Done\n' ) // end the line
+                  done()
+              } )
+              .catch( ( error ) => {
+                  console.error( error );
+              } )
+
     }
 
 } )
