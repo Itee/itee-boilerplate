@@ -52,18 +52,18 @@ function postInstall () {
     _copyFiles( 'scripts', [ 'help.js' ] )
 
     _createFolder( 'sources' )
-    _copyFiles( 'sources', [ 'itee.js' ] )
+    _copyFiles( 'sources', [ 'my_app_name.js' ] )
 
     _createFolder( 'tests' )
     _createFolder( 'tests/benchmarks' )
     _copyFiles( 'tests/benchmarks', [
         'Benchmarks.html',
-        'itee.bench.js'
+        'my_app_name.bench.js'
     ] )
     _createFolder( 'tests/units' )
     _copyFiles( 'tests/units', [
         'UnitTests.html',
-        'itee.unit.js'
+        'my_app_name.unit.js'
     ] )
 
     _createFolder( 'tutorials' )

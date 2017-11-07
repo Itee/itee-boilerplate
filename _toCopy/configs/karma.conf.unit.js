@@ -15,7 +15,7 @@ module.exports = function (config) {
 
         // list of files / patterns to load in the browser
     files: [
-            //            'builds/itee-ui.iife.js',
+            //            'builds/my_app_name.iife.js',
       'tests/units/**/*.unit.js'
     ],
 
@@ -66,9 +66,9 @@ module.exports = function (config) {
 //                reporter:        'mochawesome',
 //                reporterOptions: {
 //                    reportDir:       'tests/units/reports/',
-//                    reportFilename:  'itee-ui.report',
-//                    reportTitle:     'IteeUI Report',
-//                    reportPageTitle: 'IteeUI Report',
+//                    reportFilename:  'my_app_name.report',
+//                    reportTitle:     'MyApp Report',
+//                    reportPageTitle: 'MyApp Report',
 //                    inlineAssets:    false,
 //                    enableCharts:    true,
 //                    enableCode:      true,
