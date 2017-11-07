@@ -198,6 +198,7 @@ function _updateDevDependencies ( packageJson ) {
         "gulp-jsdoc3":                "*",
         "gulp-util":                  "*",
         "gulp-eslint":                "*",
+        "eslint-plugin-react":        "*",
         //        "gulp-standard":              "*",
         "karma":                      "*",
         "karma-benchmark":            "*",
