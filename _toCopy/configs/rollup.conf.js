@@ -40,12 +40,12 @@ module.exports = function rollupConfigure ( format, onProduction, wantSourceMap 
             onwarn: function onWarn ( { loc, frame, message } ) {
                 // print location if applicable
                 if ( loc ) {
-                    console.warn( `${loc.file} (${loc.line}:${loc.column}) ${message}` )
+                    process.stderr.write( `${loc.file} (${loc.line}:${loc.column}) ${message}` )
                     if ( frame ) {
-                        console.warn( frame )
+                        process.stderr.write( frame )
                     }
                 } else {
-                    console.warn( message )
+                    process.stderr.write( message )
                 }
             },
             cache:  undefined,
