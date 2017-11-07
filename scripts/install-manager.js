@@ -28,6 +28,8 @@ const ROOT_PATH = path.resolve( __dirname, '..', '..', '..' )
 function postInstall () {
     'use strict'
 
+    //Todo: allow recursive copy
+
     _copyFiles( '', [
         'LICENSE.md',
         'README.md',
@@ -55,11 +57,14 @@ function postInstall () {
     _copyFiles( 'sources', [ 'my_app_name.js' ] )
 
     _createFolder( 'tests' )
+    _copyFiles( 'tests', [ 'MyAppNameTest.html' ] )
+
     _createFolder( 'tests/benchmarks' )
     _copyFiles( 'tests/benchmarks', [
         'Benchmarks.html',
         'my_app_name.bench.js'
     ] )
+
     _createFolder( 'tests/units' )
     _copyFiles( 'tests/units', [
         'UnitTests.html',
