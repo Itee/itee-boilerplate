@@ -8,11 +8,14 @@
 const gulp        = require( 'gulp' )
 const util        = require( 'gulp-util' )
 const jsdoc       = require( 'gulp-jsdoc3' )
-const standard    = require( 'gulp-standard' )
-const snazzy      = require( 'snazzy' )
 const del         = require( 'del' )
 const runSequence = require( 'run-sequence' )
 const rollup      = require( 'rollup' )
+
+
+const eslint    = require( 'gulp-eslint' )
+// OR
+//const standard    = require( 'gulp-standard' )
 
 /////////////////////
 /////// HELP ////////
@@ -67,23 +70,40 @@ gulp.task( 'clean', () => {
 ////////////////////
 gulp.task( 'lint', () => {
 
-    return gulp.src( [ 'sources/**/*' ] )
-               .pipe( standard({
-//                   cwd: '',      // current working directory (default: process.cwd())
-//                   filename: '', // path of the file containing the text being linted (optional, though some eslint plugins require it)
-                   fix: true,   // automatically fix problems
+        return gulp.src( [ 'sources/**/*' ] )
+                   .pipe( eslint( {
+                       globals: [],
+                       fix: true,
+                       quiet: false,
+                       envs: [],
+                       allowInlineConfig: true,
+                       configFile: './configs/eslint.conf.json',
+                       parser: 'babel-eslint',
+                       useEslintrc: false
+                   } ) )
+                   .pipe( eslint.format('stylish') )
+                   .pipe( eslint.failAfterError() )
+
+    // OR
+
+//    return gulp.src([ 'gulpfile.js', 'configs/**/*.js', 'scripts/**/*.js', 'sources/**/*.js', 'tests/**/*.js' ])
+//               .pipe(standard({
+//                   fix:     true,   // automatically fix problems
 //                   globals: [],  // custom global variables to declare
 //                   plugins: [],  // custom eslint plugins
-//                   envs: [],     // custom eslint environment
-                   parser: 'babel-eslint'    // custom js parser (e.g. babel-eslint)
-               }) )
-               .pipe( standard.reporter( snazzy, {
-                   breakOnError:   true,
-                   breakOnWarning: true,
-                   quiet:          true,
-                   showRuleNames:  true,
-                   showFilePath:   true
-               } ) )
+//                   envs:    [],     // custom eslint environment
+//                   parser:  'babel-eslint'    // custom js parser (e.g. babel-eslint)
+//               }))
+//               .pipe(standard.reporter('default', {
+//                   breakOnError:   true,
+//                   breakOnWarning: true,
+//                   quiet:          true,
+//                   showRuleNames:  true,
+//                   showFilePath:   true
+//               }))
+//               .pipe(gulp.dest((file) => {
+//                   return file.base
+//               }))
 
 } )
 

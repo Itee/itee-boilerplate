@@ -197,7 +197,8 @@ function _updateDevDependencies ( packageJson ) {
         "gulp":                       "*",
         "gulp-jsdoc3":                "*",
         "gulp-util":                  "*",
-        "gulp-standard":              "*",
+        "gulp-eslint":                "*",
+        //        "gulp-standard":              "*",
         "karma":                      "*",
         "karma-benchmark":            "*",
         "karma-chai":                 "*",
@@ -219,8 +220,7 @@ function _updateDevDependencies ( packageJson ) {
         "rollup-plugin-replace":      "*",
         "rollup-plugin-strip":        "*",
         "rollup-plugin-uglify":       "*",
-        "run-sequence":               "*",
-        "snazzy":                     "*"
+        "run-sequence":               "*"
     } )
 
 }
