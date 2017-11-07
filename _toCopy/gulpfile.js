@@ -18,17 +18,17 @@ const eslint = require( 'gulp-eslint' )
 // OR
 //const standard    = require( 'gulp-standard' )
 
+const log    = util.log
+const colors = util.colors
+const blue   = colors.blue
+const cyan   = colors.cyan
+const red    = colors.red
+
 /////////////////////
 /////// HELP ////////
 /////////////////////
 gulp.task( 'default', [ 'help' ] )
 gulp.task( 'help', ( done ) => {
-
-    const log    = util.log
-    const colors = util.colors
-    const blue   = colors.blue
-    const cyan   = colors.cyan
-    const red    = colors.red
 
     log( 'Available commands using:', blue( 'npm run' ) )
     log( blue( 'npm run' ), cyan( 'help' ), ' - Display this help.' )
@@ -247,23 +247,22 @@ gulp.task( 'build', ( done ) => {
 
     function build ( config, done ) {
 
-        const buildOutputMessage = `Building ${config.outputOptions.file}: `
-        process.stdout.write( buildOutputMessage )
+        log( `Building ${config.outputOptions.file}` )
 
         rollup.rollup( config.inputOptions )
               .then( ( bundle ) => {
 
                   bundle.write( config.outputOptions )
                         .catch( ( error ) => {
-                            process.stderr.write( error )
+                            log( red( error ) )
+                            done()
                         } )
 
-                  //    process.stdout.cursorTo(buildOutputMessage.length)
-                  process.stdout.write( 'Done\n' ) // end the line
                   done()
               } )
               .catch( ( error ) => {
-                  process.stderr.write( error )
+                  log( red( error ) )
+                  done()
               } )
 
     }
