@@ -160,18 +160,19 @@ gulp.task( 'bench', () => {
 /////////////////////
 gulp.task( 'build', ( done ) => {
 
-    let environments = [ 'development', 'production' ]
-    let formats      = [ 'amd', 'cjs', 'es', 'iife', 'umd' ]
-    let sourceMap    = false
-    let configs      = []
-
-    processArguments( process.argv, formats, environments, sourceMap )
-    createBuildsConfigs( formats, environments, sourceMap )
+    const options = processArguments( process.argv )
+    const configs = createBuildsConfigs( options )
 
     nextBuild()
 
-    function processArguments ( processArgv, formats, environments, sourceMap ) {
+    function processArguments ( processArgv ) {
         'use strict'
+
+        let defaultOptions = {
+            environments: [ 'development', 'production' ],
+            formats: [ 'amd', 'cjs', 'es', 'iife', 'umd' ],
+            sourceMap: false
+        }
 
         const argv = processArgv.slice( 4 ) // Ignore nodejs, script paths and gulp params
         argv.forEach( argument => {
@@ -181,22 +182,22 @@ gulp.task( 'build', ( done ) => {
                 const splits    = argument.split( ':' )
                 const splitPart = splits[ 1 ]
 
-                formats = []
-                formats.push( splitPart )
+                defaultOptions.formats = []
+                defaultOptions.formats.push( splitPart )
 
             } else if ( argument.indexOf( '-d' ) > -1 || argument.indexOf( '--dev' ) > -1 ) {
 
-                environments = []
-                environments.push( 'development' )
+                defaultOptions.environments = []
+                defaultOptions.environments.push( 'development' )
 
             } else if ( argument.indexOf( '-p' ) > -1 || argument.indexOf( '--prod' ) > -1 ) {
 
-                environments = []
-                environments.push( 'production' )
+                defaultOptions.environments = []
+                defaultOptions.environments.push( 'production' )
 
             } else if ( argument.indexOf( '-s' ) > -1 || argument.indexOf( '--sourcemap' ) > -1 ) {
 
-                sourceMap = true
+                defaultOptions.sourceMap = true
 
             } else {
 
@@ -206,23 +207,29 @@ gulp.task( 'build', ( done ) => {
 
         } )
 
+        return defaultOptions
+
     }
 
-    function createBuildsConfigs ( formats, environments, sourceMap ) {
+    function createBuildsConfigs ( options ) {
         'use strict'
 
-        for ( let formatIndex = 0, numberOfFormats = formats.length ; formatIndex < numberOfFormats ; ++formatIndex ) {
-            const format = formats[ formatIndex ]
+        let configs = []
 
-            for ( let envIndex = 0, numberOfEnvs = environments.length ; envIndex < numberOfEnvs ; ++envIndex ) {
-                const environment  = environments[ envIndex ]
+        for ( let formatIndex = 0, numberOfFormats = options.formats.length ; formatIndex < numberOfFormats ; ++formatIndex ) {
+            const format = options.formats[ formatIndex ]
+
+            for ( let envIndex = 0, numberOfEnvs = options.environments.length ; envIndex < numberOfEnvs ; ++envIndex ) {
+                const environment  = options.environments[ envIndex ]
                 const onProduction = (environment === 'production')
 
-                const config = require( './configs/rollup.conf' )( format, onProduction, sourceMap )
+                const config = require( './configs/rollup.conf' )( format, onProduction, options.sourceMap )
 
                 configs.push( config )
             }
         }
+
+        return configs
 
     }
 
