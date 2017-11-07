@@ -12,7 +12,7 @@ const packageJson             = require( process.cwd() + '/package.json' );
 const scripts                 = packageJson.scripts || {};
 const scriptsHelpConfig       = getScriptsHelpConfig();
 const scriptsHelpConfigHeader = scriptsHelpConfig[ 'help-message' ];
-const search                  = specificScript = process.argv[ 2 ];
+const search                  = process.argv[ 2 ];
 
 if ( scriptsHelpConfigHeader ) {
 
