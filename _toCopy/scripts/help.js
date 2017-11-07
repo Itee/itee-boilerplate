@@ -4,6 +4,8 @@
  * from talarari
  */
 
+/* eslint-env node */
+
 const chalk = require( 'chalk' );
 
 const packageJson             = require( process.cwd() + '/package.json' );
@@ -30,9 +32,9 @@ if ( scriptsHelpConfigHeader ) {
         separator += '-'
     }
 
-    console.log( chalk.bold.cyan( separator ) );
-    console.log( getDesc( scriptsHelpConfigHeader ) );
-    console.log( chalk.bold.cyan( separator ) );
+    process.stdout.write( chalk.bold.cyan( separator ) );
+    process.stdout.write( getDesc( scriptsHelpConfigHeader ) );
+    process.stdout.write( chalk.bold.cyan( separator ) );
 }
 
 Object.keys( scripts )
@@ -65,12 +67,12 @@ function getScriptHelp ( scriptName ) {
 
 function printScriptHelp ( help ) {
 
-    console.log( ' ' );
-    console.log( chalk.cyan( help.name + ':' ) );
+    process.stdout.write( ' ' );
+    process.stdout.write( chalk.cyan( help.name + ':' ) );
     Object.keys( help ).filter( function ( key ) {return key !== 'name';} )
           .forEach( function ( helpKey ) {
               const desc = getDesc( help[ helpKey ] );
-              console.log( chalk.magenta( helpKey + ': ' ) + desc );
+              process.stdout.write( chalk.magenta( helpKey + ': ' ) + desc );
           } );
 
 }

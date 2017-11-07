@@ -1,13 +1,11 @@
+/* eslint-env node */
+
 const path        = require( 'path' )
 const buble       = require( 'rollup-plugin-buble' )
 const nodeResolve = require( 'rollup-plugin-node-resolve' )
 const commonJs    = require( 'rollup-plugin-commonjs' )
 const replace     = require( 'rollup-plugin-replace' )
 const uglify      = require( 'rollup-plugin-uglify' )
-
-// const onProduction = process.env.BUILD || false
-// const wantSourceMap = process.env.SOURCEMAP || false
-// const format = process.env.FORMAT
 
 module.exports = function rollupConfigure ( format, onProduction, wantSourceMap ) {
 

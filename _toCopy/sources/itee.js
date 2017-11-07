@@ -6,7 +6,7 @@
  * @license MIT
  */
 
-/* eslint globals document */
+/* global document */
 
 
 import React from 'react'

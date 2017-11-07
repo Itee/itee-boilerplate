@@ -2,6 +2,8 @@
  * Created by Tristan on 14/10/2017.
  */
 
+/* eslint-env node */
+
 module.exports = {
     "help-message": [
         "Itee UI - Help",

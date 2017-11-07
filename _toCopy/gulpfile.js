@@ -5,6 +5,8 @@
  * @license MIT
  */
 
+/* eslint-env node */
+
 const gulp        = require( 'gulp' )
 const util        = require( 'gulp-util' )
 const jsdoc       = require( 'gulp-jsdoc3' )
@@ -12,8 +14,7 @@ const del         = require( 'del' )
 const runSequence = require( 'run-sequence' )
 const rollup      = require( 'rollup' )
 
-
-const eslint    = require( 'gulp-eslint' )
+const eslint = require( 'gulp-eslint' )
 // OR
 //const standard    = require( 'gulp-standard' )
 
@@ -70,40 +71,54 @@ gulp.task( 'clean', () => {
 ////////////////////
 gulp.task( 'lint', () => {
 
-        return gulp.src( [ 'sources/**/*' ] )
-                   .pipe( eslint( {
-                       globals: [],
-                       fix: true,
-                       quiet: false,
-                       envs: [],
-                       allowInlineConfig: true,
-                       configFile: './configs/eslint.conf.json',
-                       parser: 'babel-eslint',
-                       useEslintrc: false
-                   } ) )
-                   .pipe( eslint.format('stylish') )
-                   .pipe( eslint.failAfterError() )
+    // Todo: split between source and test with differents env
+
+    return gulp.src( [ 'gulpfile.js', 'configs/**/*.js', 'scripts/**/*.js', 'sources/**/*', 'tests/**/*.js' ] )
+               .pipe( eslint( {
+                   allowInlineConfig: true,
+                   globals:           [],
+                   fix:               true,
+                   quiet:             false,
+                   envs:              [],
+                   configFile:        './configs/eslint.conf.json',
+                   parser:            'babel-eslint',
+                   parserOptions:     {
+                       ecmaFeatures: {
+                           jsx: true
+                       }
+                   },
+                   plugins:           [
+                       'react'
+                   ],
+                   rules:             {
+                       "react/jsx-uses-react": "error",
+                       "react/jsx-uses-vars":  "error"
+                   },
+                   useEslintrc:       false
+               } ) )
+               .pipe( eslint.format( 'stylish' ) )
+               .pipe( eslint.failAfterError() )
 
     // OR
 
-//    return gulp.src([ 'gulpfile.js', 'configs/**/*.js', 'scripts/**/*.js', 'sources/**/*.js', 'tests/**/*.js' ])
-//               .pipe(standard({
-//                   fix:     true,   // automatically fix problems
-//                   globals: [],  // custom global variables to declare
-//                   plugins: [],  // custom eslint plugins
-//                   envs:    [],     // custom eslint environment
-//                   parser:  'babel-eslint'    // custom js parser (e.g. babel-eslint)
-//               }))
-//               .pipe(standard.reporter('default', {
-//                   breakOnError:   true,
-//                   breakOnWarning: true,
-//                   quiet:          true,
-//                   showRuleNames:  true,
-//                   showFilePath:   true
-//               }))
-//               .pipe(gulp.dest((file) => {
-//                   return file.base
-//               }))
+    //    return gulp.src([ 'gulpfile.js', 'configs/**/*.js', 'scripts/**/*.js', 'sources/**/*.js', 'tests/**/*.js' ])
+    //               .pipe(standard({
+    //                   fix:     true,   // automatically fix problems
+    //                   globals: [],  // custom global variables to declare
+    //                   plugins: [],  // custom eslint plugins
+    //                   envs:    [],     // custom eslint environment
+    //                   parser:  'babel-eslint'    // custom js parser (e.g. babel-eslint)
+    //               }))
+    //               .pipe(standard.reporter('default', {
+    //                   breakOnError:   true,
+    //                   breakOnWarning: true,
+    //                   quiet:          true,
+    //                   showRuleNames:  true,
+    //                   showFilePath:   true
+    //               }))
+    //               .pipe(gulp.dest((file) => {
+    //                   return file.base
+    //               }))
 
 } )
 
@@ -233,7 +248,7 @@ gulp.task( 'build', ( done ) => {
 
                   bundle.write( config.outputOptions )
                         .catch( ( error ) => {
-                            console.error( error );
+                            process.stderr.write( error )
                         } )
 
                   //    process.stdout.cursorTo(buildOutputMessage.length)
@@ -241,7 +256,7 @@ gulp.task( 'build', ( done ) => {
                   done()
               } )
               .catch( ( error ) => {
-                  console.error( error );
+                  process.stderr.write( error )
               } )
 
     }
