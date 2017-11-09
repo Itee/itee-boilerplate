@@ -116,8 +116,8 @@ function _getFilesPathsUnder ( filePaths ) {
 
     function checkStateOf ( filePath ) {
 
-        if ( !_fileExistForPath( filePath ) ) {
-            console.error( 'ES6Converter: Invalid file path "' + filePath + '"' )
+        if ( !fs.existsSync( filePath ) ) {
+            console.error( `Post-Install: Invalid file path "${filePath}"` )
             return
         }
 
@@ -132,7 +132,7 @@ function _getFilesPathsUnder ( filePaths ) {
 
         } else {
 
-            console.error( "Invalid stat object !" )
+            console.error( 'Post-Install: Invalid stat object !' )
 
         }
 
