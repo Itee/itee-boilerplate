@@ -149,6 +149,8 @@ function _checkFileName ( fileName ) {
     const isDotFile = new RegExp( '^_' )
     if ( isDotFile.test( fileName ) ) {
         updatedFileName = fileName.replace( /^_/, '.' )
+    } else {
+        updatedFileName = fileName
     }
 
     return updatedFileName
