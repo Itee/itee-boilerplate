@@ -30,50 +30,7 @@ function postInstall () {
     'use strict'
 
     //Todo: allow recursive copy
-    _recursiveCopy( TO_COPY_PATH, ROOT_PATH )
-
-    //    _copyFiles( '', [
-    //        'LICENSE.md',
-    //        'README.md',
-    //        '_gitignore',
-    //        'gulpfile.js'
-    //    ] )
-    //
-    //    _createFolder( 'builds' )
-    //
-    //    _createFolder( 'configs' )
-    //    _copyFiles( 'configs', [
-    //        'babel.conf.json',
-    //        'eslint.conf.json',
-    //        'help.conf.js',
-    //        'jsdoc.conf.json',
-    //        'karma.conf.bench.js',
-    //        'karma.conf.unit.js',
-    //        'rollup.conf.js'
-    //    ] )
-    //
-    //    _createFolder( 'scripts' )
-    //    _copyFiles( 'scripts', [ 'help.js' ] )
-    //
-    //    _createFolder( 'sources' )
-    //    _copyFiles( 'sources', [ 'my_app_name.js' ] )
-    //
-    //    _createFolder( 'tests' )
-    //    _copyFiles( 'tests', [ 'MyAppNameTest.html' ] )
-    //
-    //    _createFolder( 'tests/benchmarks' )
-    //    _copyFiles( 'tests/benchmarks', [
-    //        'Benchmarks.html',
-    //        'my_app_name.bench.js'
-    //    ] )
-    //
-    //    _createFolder( 'tests/units' )
-    //    _copyFiles( 'tests/units', [
-    //        'UnitTests.html',
-    //        'my_app_name.unit.js'
-    //    ] )
-    //
-    //    _createFolder( 'tutorials' )
+    _copyFiles( TO_COPY_PATH, ROOT_PATH )
 
     _updatePackage()
 
@@ -140,112 +97,30 @@ function _getFilesPathsUnder ( filePaths ) {
 
 }
 
-function _checkFileName ( fileName ) {
-    'use strict'
-
-    let updatedFileName = undefined
-
-    // Check for dotFile
-    const isDotFile = new RegExp( '^_' )
-    if ( isDotFile.test( fileName ) ) {
-        updatedFileName = fileName.replace( /^_/, '.' )
-    } else {
-        updatedFileName = fileName
-    }
-
-    return updatedFileName
-
-}
-
-function _recursiveCopy ( inputPath, outputPath ) {
+function _copyFiles ( inputPath, outputPath ) {
     'use strict'
 
     const filesPaths     = _getFilesPathsUnder( inputPath )
     const isTemplateFile = false
 
     let filePath       = undefined
-    let dirName        = undefined
-    let baseName       = undefined
-    let fileName       = undefined
+    let relativePath   = undefined
     let outputFilePath = undefined
 
     for ( let pathIndex = 0, numberOfPaths = filesPaths.length ; pathIndex < numberOfPaths ; pathIndex++ ) {
 
         filePath       = filesPaths[ pathIndex ]
-        dirName        = path.dirname( filePath )
-        baseName       = path.basename( filePath )
-        fileName       = _checkFileName( baseName )
-        outputFilePath = path.join( outputPath, fileName )
-
-        fsExtra.ensureDirSync( dirName )
+        relativePath   = path.relative( inputPath, filePath )
+        outputFilePath = path.join( outputPath, relativePath )
 
         if ( isTemplateFile ) {
             // Todo: manage template files
         } else {
+            console.log( `Copy ${filePath} to ${outputFilePath}` )
             fsExtra.copySync( filePath, outputFilePath )
         }
 
     }
-
-}
-
-function _createFolder ( name ) {
-    'use strict'
-
-    const folderPath = path.resolve( ROOT_PATH, name )
-
-    if ( fs.existsSync( folderPath ) ) {
-        return
-    }
-
-    fs.mkdirSync( folderPath, 0o777 )
-    console.log( `Create ${folderPath}` )
-
-}
-
-function _copyFiles ( folder, files ) {
-    'use strict'
-
-    let file = undefined
-    for ( let fileIndex = 0, numberOfFiles = files.length ; fileIndex < numberOfFiles ; fileIndex++ ) {
-        file = files[ fileIndex ]
-        _copyFile( folder, file )
-    }
-
-}
-
-function _copyFile2 ( inputFile, outputFile ) {
-    'use strict'
-
-    if ( fs.existsSync( outputFile ) ) {
-        return
-    }
-
-    fsExtra.copySync( inputFile, outputFile )
-    console.log( `Copy ${file} to ${outputFile}` )
-
-}
-
-function _copyFile ( folder, file ) {
-    'use strict'
-
-    const inputFile = path.join( __dirname, '..', '_toCopy', folder, file )
-
-    // Check for dotFile
-    let outputFileName = file
-    const isDotFile    = new RegExp( '^_' )
-    if ( isDotFile.test( file ) ) {
-        outputFileName = file.replace( /^_/, '.' )
-    }
-
-    const outputFile = path.join( ROOT_PATH, folder, outputFileName )
-
-    if ( fs.existsSync( outputFile ) ) {
-        return
-    }
-
-    fsExtra.copySync( inputFile, outputFile )
-    console.log( `Copy ${file} to ${outputFile}` )
 
 }
 
