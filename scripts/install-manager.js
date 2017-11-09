@@ -23,59 +23,167 @@ ARGV.forEach( argument => {
 
 } )
 
-const ROOT_PATH = path.resolve( __dirname, '..', '..', '..' )
+const ROOT_PATH    = path.resolve( __dirname, '..', '..', '..' )
+const TO_COPY_PATH = path.join( __dirname, '_toCopy' )
 
 function postInstall () {
     'use strict'
 
     //Todo: allow recursive copy
+    _recursiveCopy( TO_COPY_PATH, ROOT_PATH )
 
-    _copyFiles( '', [
-        'LICENSE.md',
-        'README.md',
-        '_gitignore',
-        'gulpfile.js'
-    ] )
-
-    _createFolder( 'builds' )
-
-    _createFolder( 'configs' )
-    _copyFiles( 'configs', [
-        'babel.conf.json',
-        'eslint.conf.json',
-        'help.conf.js',
-        'jsdoc.conf.json',
-        'karma.conf.bench.js',
-        'karma.conf.unit.js',
-        'rollup.conf.js'
-    ] )
-
-    _createFolder( 'scripts' )
-    _copyFiles( 'scripts', [ 'help.js' ] )
-
-    _createFolder( 'sources' )
-    _copyFiles( 'sources', [ 'my_app_name.js' ] )
-
-    _createFolder( 'tests' )
-    _copyFiles( 'tests', [ 'MyAppNameTest.html' ] )
-
-    _createFolder( 'tests/benchmarks' )
-    _copyFiles( 'tests/benchmarks', [
-        'Benchmarks.html',
-        'my_app_name.bench.js'
-    ] )
-
-    _createFolder( 'tests/units' )
-    _copyFiles( 'tests/units', [
-        'UnitTests.html',
-        'my_app_name.unit.js'
-    ] )
-
-    _createFolder( 'tutorials' )
+//    _copyFiles( '', [
+//        'LICENSE.md',
+//        'README.md',
+//        '_gitignore',
+//        'gulpfile.js'
+//    ] )
+//
+//    _createFolder( 'builds' )
+//
+//    _createFolder( 'configs' )
+//    _copyFiles( 'configs', [
+//        'babel.conf.json',
+//        'eslint.conf.json',
+//        'help.conf.js',
+//        'jsdoc.conf.json',
+//        'karma.conf.bench.js',
+//        'karma.conf.unit.js',
+//        'rollup.conf.js'
+//    ] )
+//
+//    _createFolder( 'scripts' )
+//    _copyFiles( 'scripts', [ 'help.js' ] )
+//
+//    _createFolder( 'sources' )
+//    _copyFiles( 'sources', [ 'my_app_name.js' ] )
+//
+//    _createFolder( 'tests' )
+//    _copyFiles( 'tests', [ 'MyAppNameTest.html' ] )
+//
+//    _createFolder( 'tests/benchmarks' )
+//    _copyFiles( 'tests/benchmarks', [
+//        'Benchmarks.html',
+//        'my_app_name.bench.js'
+//    ] )
+//
+//    _createFolder( 'tests/units' )
+//    _copyFiles( 'tests/units', [
+//        'UnitTests.html',
+//        'my_app_name.unit.js'
+//    ] )
+//
+//    _createFolder( 'tutorials' )
 
     _updatePackage()
 
     _firstRelease()
+
+}
+
+function _getFilesPathsUnder ( filePaths ) {
+
+    let files = []
+
+    if ( Array.isArray( filePaths ) ) {
+
+        let filePath = undefined
+        for ( let pathIndex = 0, numberOfPaths = filePaths.length ; pathIndex < numberOfPaths ; pathIndex++ ) {
+
+            filePath = filePaths[ pathIndex ]
+            checkStateOf( filePath )
+
+        }
+
+    } else {
+
+        checkStateOf( filePaths )
+
+    }
+
+    return files
+
+    function getFilesPathsUnderFolder ( folder ) {
+
+        fs.readdirSync( folder ).forEach( ( name ) => {
+
+            const filePath = path.resolve( folder, name )
+            checkStateOf( filePath )
+
+        } )
+
+    }
+
+    function checkStateOf ( filePath ) {
+
+        if ( !_fileExistForPath( filePath ) ) {
+            console.error( 'ES6Converter: Invalid file path "' + filePath + '"' )
+            return
+        }
+
+        const stats = fs.statSync( filePath )
+        if ( stats.isFile() ) {
+
+            files.push( filePath )
+
+        } else if ( stats.isDirectory() ) {
+
+            Array.prototype.push.apply( files, getFilesPathsUnderFolder( filePath ) )
+
+        } else {
+
+            console.error( "Invalid stat object !" )
+
+        }
+
+    }
+
+}
+
+function _checkFileName ( fileName ) {
+    'use strict'
+
+    let updatedFileName = undefined
+
+    // Check for dotFile
+    const isDotFile = new RegExp( '^_' )
+    if ( isDotFile.test( fileName ) ) {
+        updatedFileName = fileName.replace( /^_/, '.' )
+    }
+
+    return updatedFileName
+
+}
+
+function _recursiveCopy ( inputPath, outputPath ) {
+    'use strict'
+
+    const filesPaths     = _getFilesPathsUnder( inputPath )
+    const isTemplateFile = false
+
+    let filePath       = undefined
+    let dirName        = undefined
+    let baseName       = undefined
+    let fileName       = undefined
+    let outputFilePath = undefined
+
+    for ( let pathIndex = 0, numberOfPaths = filesPaths.length ; pathIndex < numberOfPaths ; pathIndex++ ) {
+
+        filePath       = filesPaths[ pathIndex ]
+        dirName        = path.dirname( filePath )
+        baseName       = path.basename( filePath )
+        fileName       = _checkFileName( baseName )
+        outputFilePath = path.join( outputPath, fileName )
+
+        fsExtra.ensureDirSync( dirName )
+
+        if ( isTemplateFile ) {
+            // Todo: manage template files
+        } else {
+            fsExtra.copySync( filePath, outputFilePath )
+        }
+
+    }
 
 }
 
@@ -104,6 +212,18 @@ function _copyFiles ( folder, files ) {
 
 }
 
+function _copyFile2 ( inputFile, outputFile ) {
+    'use strict'
+
+    if ( fs.existsSync( outputFile ) ) {
+        return
+    }
+
+    fsExtra.copySync( inputFile, outputFile )
+    console.log( `Copy ${file} to ${outputFile}` )
+
+}
+
 function _copyFile ( folder, file ) {
     'use strict'
 
@@ -127,12 +247,17 @@ function _copyFile ( folder, file ) {
 
 }
 
+function _getJSONFile ( filePath ) {
+
+    return ( fs.existsSync( filePath ) ) ? JSON.parse( fs.readFileSync( filePath, 'utf-8' ) ) : {}
+
+}
+
 function _updatePackage () {
     'use strict'
 
     const PACKAGE_JSON_PATH = path.resolve( ROOT_PATH, 'package.json' )
-    const packageFile       = ( fs.existsSync( PACKAGE_JSON_PATH ) ) ? fs.readFileSync( PACKAGE_JSON_PATH, 'utf-8' ) : '{}'
-    let packageJson         = JSON.parse( packageFile )
+    let packageJson         = _getJSONFile( PACKAGE_JSON_PATH )
 
     _updateScripts( packageJson )
     _updateDependencies( packageJson )
@@ -204,7 +329,6 @@ function _updateDevDependencies ( packageJson ) {
         "gulp-util":                  "*",
         "gulp-eslint":                "*",
         "eslint-plugin-react":        "*",
-        //        "gulp-standard":              "*",
         "karma":                      "*",
         "karma-benchmark":            "*",
         "karma-chai":                 "*",
