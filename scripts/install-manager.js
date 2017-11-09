@@ -32,48 +32,48 @@ function postInstall () {
     //Todo: allow recursive copy
     _recursiveCopy( TO_COPY_PATH, ROOT_PATH )
 
-//    _copyFiles( '', [
-//        'LICENSE.md',
-//        'README.md',
-//        '_gitignore',
-//        'gulpfile.js'
-//    ] )
-//
-//    _createFolder( 'builds' )
-//
-//    _createFolder( 'configs' )
-//    _copyFiles( 'configs', [
-//        'babel.conf.json',
-//        'eslint.conf.json',
-//        'help.conf.js',
-//        'jsdoc.conf.json',
-//        'karma.conf.bench.js',
-//        'karma.conf.unit.js',
-//        'rollup.conf.js'
-//    ] )
-//
-//    _createFolder( 'scripts' )
-//    _copyFiles( 'scripts', [ 'help.js' ] )
-//
-//    _createFolder( 'sources' )
-//    _copyFiles( 'sources', [ 'my_app_name.js' ] )
-//
-//    _createFolder( 'tests' )
-//    _copyFiles( 'tests', [ 'MyAppNameTest.html' ] )
-//
-//    _createFolder( 'tests/benchmarks' )
-//    _copyFiles( 'tests/benchmarks', [
-//        'Benchmarks.html',
-//        'my_app_name.bench.js'
-//    ] )
-//
-//    _createFolder( 'tests/units' )
-//    _copyFiles( 'tests/units', [
-//        'UnitTests.html',
-//        'my_app_name.unit.js'
-//    ] )
-//
-//    _createFolder( 'tutorials' )
+    //    _copyFiles( '', [
+    //        'LICENSE.md',
+    //        'README.md',
+    //        '_gitignore',
+    //        'gulpfile.js'
+    //    ] )
+    //
+    //    _createFolder( 'builds' )
+    //
+    //    _createFolder( 'configs' )
+    //    _copyFiles( 'configs', [
+    //        'babel.conf.json',
+    //        'eslint.conf.json',
+    //        'help.conf.js',
+    //        'jsdoc.conf.json',
+    //        'karma.conf.bench.js',
+    //        'karma.conf.unit.js',
+    //        'rollup.conf.js'
+    //    ] )
+    //
+    //    _createFolder( 'scripts' )
+    //    _copyFiles( 'scripts', [ 'help.js' ] )
+    //
+    //    _createFolder( 'sources' )
+    //    _copyFiles( 'sources', [ 'my_app_name.js' ] )
+    //
+    //    _createFolder( 'tests' )
+    //    _copyFiles( 'tests', [ 'MyAppNameTest.html' ] )
+    //
+    //    _createFolder( 'tests/benchmarks' )
+    //    _copyFiles( 'tests/benchmarks', [
+    //        'Benchmarks.html',
+    //        'my_app_name.bench.js'
+    //    ] )
+    //
+    //    _createFolder( 'tests/units' )
+    //    _copyFiles( 'tests/units', [
+    //        'UnitTests.html',
+    //        'my_app_name.unit.js'
+    //    ] )
+    //
+    //    _createFolder( 'tutorials' )
 
     _updatePackage()
 
