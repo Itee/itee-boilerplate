@@ -5,6 +5,7 @@
 const fs           = require( 'fs' )
 const fsExtra      = require( 'fs-extra' )
 const path         = require( 'path' )
+const prompt         = require( 'prompt' );
 const { execSync } = require( 'child_process' )
 
 // Process argv
@@ -26,19 +27,51 @@ ARGV.forEach( argument => {
 const ROOT_PATH    = path.resolve( __dirname, '..', '..', '..' )
 const TO_COPY_PATH = path.join( __dirname, '..', '_toCopy' )
 
+//let userRequirements = {}
+
 function postInstall () {
     'use strict'
 
-    //Todo: allow recursive copy
-    _copyFiles( TO_COPY_PATH, ROOT_PATH )
+    _askUserDesiredEnvironment( ( userRequirements ) => {
 
-    _updatePackage()
+        _copyFiles( TO_COPY_PATH, ROOT_PATH )
 
-    _firstRelease()
+        _updatePackage()
+
+        _firstRelease()
+
+    } )
+
+}
+
+function _askUserDesiredEnvironment ( next ) {
+    'use strict'
+
+    prompt.start();
+
+    prompt.get(['username', 'email'], ( error, result ) => {
+
+        if(error) {
+            console.error(error)
+            _askUserDesiredEnvironment(next)
+            return
+        }
+
+        //
+        // Log the results.
+        //
+        console.log('Command-line input received:')
+        console.log('  username: ' + result.username)
+        console.log('  email: ' + result.email)
+
+        next(result)
+
+    } );
 
 }
 
 function _getFilesPathsUnder ( filePaths ) {
+    'use strict'
 
     let files = []
 
@@ -125,6 +158,7 @@ function _copyFiles ( inputPath, outputPath ) {
 }
 
 function _getJSONFile ( filePath ) {
+    'use strict'
 
     return ( fs.existsSync( filePath ) ) ? JSON.parse( fs.readFileSync( filePath, 'utf-8' ) ) : {}
 
