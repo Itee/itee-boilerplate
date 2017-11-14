@@ -27,8 +27,6 @@ ARGV.forEach( argument => {
 const ROOT_PATH    = path.resolve( __dirname, '..', '..', '..' )
 const TO_COPY_PATH = path.join( __dirname, '..', '_toCopy' )
 
-//let userRequirements = {}
-
 function postInstall () {
     'use strict'
 
