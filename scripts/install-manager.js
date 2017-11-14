@@ -5,7 +5,7 @@
 const fs           = require( 'fs' )
 const fsExtra      = require( 'fs-extra' )
 const path         = require( 'path' )
-const prompt         = require( 'prompt' );
+const prompt       = require( 'prompt' );
 const { execSync } = require( 'child_process' )
 
 // Process argv
@@ -26,11 +26,88 @@ ARGV.forEach( argument => {
 
 const ROOT_PATH    = path.resolve( __dirname, '..', '..', '..' )
 const TO_COPY_PATH = path.join( __dirname, '..', '_toCopy' )
+const schema       = {
+    properties: {
+        packageName:           {
+            description: 'Enter the application name',
+            type:        'string',
+            pattern:     /^[a-z\-]+$/,
+            message:     'The application name must be lower case letters, or dashes !',
+            required:    true
+        },
+        packageDescription:    {
+            description: 'What will do/What is the purpose of your application ?',
+            type:        'string',
+            pattern:     /^[\w\s]+$/,
+            message:     'The application description cannot contain special characters !',
+            required:    true
+        },
+        packageAuthorName:     {
+            description: 'What is your name ?',
+            type:        'string',
+            pattern:     /^[a-zA-Z\s\-]+$/,
+            message:     'Name must be only letters, spaces, or dashes',
+            required:    true
+        },
+        packageWantKeywords:   {
+            description: 'Want you add some keywords for your application ? (true)/false',
+            type:        'boolean',
+            yes:         /^[yt]/i,
+            default:     true,
+            message:     'Available values are: t, true, f or false !',
+            required:    true
+        },
+        packageKeywords:       {
+            description: 'What are the keywords ? (Separate by space)',
+            type:        'string',
+            ask:         () => {
+                return prompt.history( 'packageWantKeywords' ).value === true
+            }
+        },
+        packageLicense:        {
+            description: 'What is your license type ? MIT: 1, LGPL: 2, GPL: 3, Other: 4',
+            type:        'integer',
+            default:     1,
+            message:     'Type 1, 2, 3 or 4 to select your license type !'
+        },
+        packageHaveRepository: {
+            description: 'Does your application already have a repository ? (true)/false',
+            type:        'boolean',
+            default:     true,
+            message:     'Available values are: t, true, f or false !',
+            required:    true
+        },
+        packageRepositoryType: {
+            description: 'What is your repository type ?',
+            type:        'string',
+            ask:         () => {
+                return prompt.history( 'packageHaveRepository' ).value === true
+            }
+        },
+        packageRepositoryUrl:  {
+            description: 'What is your repository url ?',
+            type:        'string',
+            pattern:     /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/,
+            ask:         () => {
+                return prompt.history( 'packageHaveRepository' ).value === true
+            }
+        },
+
+        applicationType:        {
+            description: 'What is your application type ? Library: 1, Server Application: 2, Client Application: 3, Other: 4',
+            type:        'integer',
+            default:     1,
+            message:     'Type 1, 2, 3 or 4 to select your license type !'
+        },
+
+    }
+}
+let userRequirements = {}
 
 function postInstall () {
     'use strict'
 
-    _askUserDesiredEnvironment( ( userRequirements ) => {
+    _askUserDesiredEnvironment( () => {
 
         _copyFiles( TO_COPY_PATH, ROOT_PATH )
 
@@ -47,22 +124,18 @@ function _askUserDesiredEnvironment ( next ) {
 
     prompt.start();
 
-    prompt.get(['username', 'email'], ( error, result ) => {
+    prompt.get( userRequirements, schema, ( error ) => {
 
-        if(error) {
-            console.error(error)
-            _askUserDesiredEnvironment(next)
+        if ( error ) {
+            console.error( error )
+            _askUserDesiredEnvironment( next )
             return
         }
 
-        //
-        // Log the results.
-        //
-        console.log('Command-line input received:')
-        console.log('  username: ' + result.username)
-        console.log('  email: ' + result.email)
+        console.log( 'Command-line input received:' )
+        console.log( userRequirements )
 
-        next(result)
+        next()
 
     } );
 
