@@ -5,8 +5,12 @@
 const fs           = require( 'fs' )
 const fsExtra      = require( 'fs-extra' )
 const path         = require( 'path' )
-const prompt       = require( 'prompt' );
+const prompt       = require( 'prompt' )
 const { execSync } = require( 'child_process' )
+
+// override prompt message
+prompt.message = 'Itee say'
+prompt.delimiter = ' '
 
 // Process argv
 const ARGV           = process.argv.slice( 2 ) // Ignore nodejs and script paths
@@ -24,33 +28,33 @@ ARGV.forEach( argument => {
 
 } )
 
-const ROOT_PATH    = path.resolve( __dirname, '..', '..', '..' )
-const TO_COPY_PATH = path.join( __dirname, '..', '_toCopy' )
-const schema       = {
+const ROOT_PATH      = path.resolve( __dirname, '..', '..', '..' )
+const TO_COPY_PATH   = path.join( __dirname, '..', '_toCopy' )
+const USER_INTERROGATORY         = {
     properties: {
         packageName:           {
-            description: 'Enter the application name',
+            description: '"Enter the application name": ',
             type:        'string',
             pattern:     /^[a-z\-]+$/,
             message:     'The application name must be lower case letters, or dashes !',
             required:    true
         },
         packageDescription:    {
-            description: 'What will do/What is the purpose of your application ?',
+            description: '"What will do/What is the purpose of your application ?": ',
             type:        'string',
             pattern:     /^[\w\s]+$/,
             message:     'The application description cannot contain special characters !',
             required:    true
         },
         packageAuthorName:     {
-            description: 'What is your name ?',
+            description: '"What is your name ?"',
             type:        'string',
             pattern:     /^[a-zA-Z\s\-]+$/,
             message:     'Name must be only letters, spaces, or dashes',
             required:    true
         },
         packageWantKeywords:   {
-            description: 'Want you add some keywords for your application ? (true)/false',
+            description: '"Want you add some keywords for your application ?" [(true)/false]: ',
             type:        'boolean',
             yes:         /^[yt]/i,
             default:     true,
@@ -58,34 +62,34 @@ const schema       = {
             required:    true
         },
         packageKeywords:       {
-            description: 'What are the keywords ? (Separate by space)',
+            description: '"What are the keywords ?" (Separate by space)',
             type:        'string',
             ask:         () => {
                 return prompt.history( 'packageWantKeywords' ).value === true
             }
         },
         packageLicense:        {
-            description: 'What is your license type ? MIT: 1, LGPL: 2, GPL: 3, Other: 4',
+            description: '"What is your license type ?" [MIT: 1, LGPL: 2, GPL: 3, Other: 4]: ',
             type:        'integer',
             default:     1,
             message:     'Type 1, 2, 3 or 4 to select your license type !'
         },
         packageHaveRepository: {
-            description: 'Does your application already have a repository ? (true)/false',
+            description: '"Does your application already have a repository ?" [(true)/false]: ',
             type:        'boolean',
             default:     true,
             message:     'Available values are: t, true, f or false !',
             required:    true
         },
         packageRepositoryType: {
-            description: 'What is your repository type ?',
+            description: '"What is your repository type ?": ',
             type:        'string',
             ask:         () => {
                 return prompt.history( 'packageHaveRepository' ).value === true
             }
         },
         packageRepositoryUrl:  {
-            description: 'What is your repository url ?',
+            description: '"What is your repository url ?": ',
             type:        'string',
             pattern:     /(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/,
             ask:         () => {
@@ -93,8 +97,8 @@ const schema       = {
             }
         },
 
-        applicationType:        {
-            description: 'What is your application type ? Library: 1, Server Application: 2, Client Application: 3, Other: 4',
+        applicationType: {
+            description: '"What is your application type ?" [Library: 1, Server Application: 2, Client Application: 3, Other: 4]: ',
             type:        'integer',
             default:     1,
             message:     'Type 1, 2, 3 or 4 to select your license type !'
@@ -124,18 +128,22 @@ function _askUserDesiredEnvironment ( next ) {
 
     prompt.start();
 
-    prompt.get( userRequirements, schema, ( error ) => {
+    //    prompt.addProperties( userRequirements, USER_INTERROGATORY, ( error ) => {
+    prompt.get( USER_INTERROGATORY, ( error, userRequirements ) => {
 
         if ( error ) {
+
             console.error( error )
             _askUserDesiredEnvironment( next )
-            return
+
+        } else {
+
+            console.log( 'Command-line input received:' )
+            console.log( userRequirements )
+
+            next()
+
         }
-
-        console.log( 'Command-line input received:' )
-        console.log( userRequirements )
-
-        next()
 
     } );
 
