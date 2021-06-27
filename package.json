@@ -24,9 +24,16 @@
     "type": "git",
     "url": "https://github.com/Itee/itee-boilerplate"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "cz-conventional-changelog": "^3.3.0"
+  },
   "dependencies": {
-    "fs-extra": "^4.0.2",
-    "prompt": "^1.0.0"
+    "fs-extra": "^10.0.0",
+    "prompt": "^1.1.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
