@@ -29,7 +29,7 @@
   },
   "dependencies": {
     "fs-extra": "^10.0.0",
-    "prompt": "^1.1.0"
+    "prompt": "^1.2.1"
   },
   "config": {
     "commitizen": {
